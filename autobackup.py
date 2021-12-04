@@ -41,7 +41,7 @@ def storepaths():
         destination = lines[1].replace("\n","")
         pathfile.close()
 
-    return pathstoadd,destination
+    return pathstoaddlist,destination
 
 def backup(pathstobackup:list,backupdestination:str,backupoptions = "/s /MIR /v /eta"):
     
@@ -51,15 +51,13 @@ def backup(pathstobackup:list,backupdestination:str,backupoptions = "/s /MIR /v 
         if os.path.isdir(pathstobackup[i]):
             copycommand.append('--title SD="'+str(pathstobackup[i])+'DD='+backupdestination+'" robocopy "'+str(pathstobackup[i])+'" "'+backupdestination+str(pathstobackup[i].replace(str(Path(pathstobackup[i]).parent.absolute()),''))+'" '+backupoptions+';')
         else:
-            filename = pathstobackup[i].split("\\")[pathstobackup.count("\\")-1]
+            filename = str(pathstobackup[i]).rsplit("\\",1)[1]
             pathstobackup[i] = pathstobackup[i].split("\\"+filename)[0]
             copycommand.append('--title SD="'+str(pathstobackup[i])+'DD='+backupdestination+'" robocopy "'+str(pathstobackup[i])+'" "'+backupdestination+'" "'+filename+'" /v /eta;')
     copycommand[len(copycommand)-1] = copycommand[len(copycommand)-1].replace(";","")
     copycommand = str(copycommand).replace("', '","").replace("[","").replace("]","").replace("'","")
     os.popen(copycommand)
-    print(copycommand)
 
 if __name__ == "__main__":
     PathstocopytoBackup, destination = storepaths()
-
     backup(PathstocopytoBackup,destination)
