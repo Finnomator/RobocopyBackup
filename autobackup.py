@@ -37,7 +37,7 @@ def storepaths():
     else:
         pathfile = open(thispath+"backupandsavepaths.txt","r")
         lines = pathfile.readlines()
-        pathstoadd = lines[0].replace("\n","").split(";")
+        pathstoaddlist = lines[0].replace("\n","").split(";")
         destination = lines[1].replace("\n","")
         pathfile.close()
 
